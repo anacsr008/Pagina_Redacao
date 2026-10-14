@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redigindo...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <button class="back-btn" id="back-btn" onclick="goBack()" style="display: none;">←</button>
+            <div class="logo-container">
+                <div class="logo-icon">✎</div>
+                <div>
+                    <div class="logo-title" id="header-title">Escrever Redação</div>
+                    <div class="logo-subtitle" id="header-subtitle">Escolha um tema para começar</div>
+                </div>
+            </div>
+        </div>
+        <div class="header-right" id="header-word-count" style="display: none;">
+            <span id="word-count-header">0 palavras</span> / mín. 150
+        </div>
+    </header>
+
+    <div class="steps-bar">
+        <div class="step-pill active" id="pill-step-1">
+            <span>1</span> Tema
+        </div>
+        <div class="step-pill" id="pill-step-2">
+            <span>2</span> Escrever
+        </div>
+        <div class="step-pill" id="pill-step-3">
+            <span>3</span> Resultado
+        </div>
+    </div>
+
+    <main>
+        
+        <!-- ETAPA 1: TEMA -->
+        <section id="view-1" class="view-section active">
+            <p class="section-desc">Escolha um tema para sua redação dissertativo-argumentativa. Após escrever, a IA irá corrigir e pontuar sua redação.</p>
+            
+            <div class="theme-card" onclick="selectTheme('O papel da literatura na formação do cidadão brasileiro', 'Cultura', 'Médio', '+150 XP')">
+                <div class="theme-info">
+                    <h3>O papel da literatura na formação do cidadão brasileiro</h3>
+                    <p>Cultura</p>
+                </div>
+                <div class="theme-meta">
+                    <span class="badge medio">Médio</span>
+                    <span class="xp-text">+150 XP</span>
+                </div>
+            </div>
+
+            <div class="theme-card" onclick="selectTheme('Regionalismo versus universalismo na literatura brasileira', 'Literatura', 'Difícil', '+200 XP')">
+                <div class="theme-info">
+                    <h3>Regionalismo versus universalismo na literatura brasileira</h3>
+                    <p>Literatura</p>
+                </div>
+                <div class="theme-meta">
+                    <span class="badge dificil">Difícil</span>
+                    <span class="xp-text">+200 XP</span>
+                </div>
+            </div>
+
+            <div class="theme-card" onclick="selectTheme('A influência das redes sociais na leitura entre jovens', 'Tecnologia', 'Fácil', '+100 XP')">
+                <div class="theme-info">
+                    <h3>A influência das redes sociais na leitura entre jovens</h3>
+                    <p>Tecnologia</p>
+                </div>
+                <div class="theme-meta">
+                    <span class="badge facil">Fácil</span>
+                    <span class="xp-text">+100 XP</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ETAPA 2: ESCREVER -->
+        <section id="view-2" class="view-section">
+            <div class="topic-highlight-card">
+                <div class="topic-header-row">
+                    <span>TEMA DA REDAÇÃO</span>
+                </div>
+                <div class="topic-title-main" id="selected-theme-title">O papel da literatura na formação do cidadão brasileiro</div>
+                <div class="theme-meta-badges">
+                    <span class="badge medio" id="theme-level-badge">Médio</span>
+                    <span class="xp-complete-text" id="theme-xp-badge">+150 XP ao completar</span>
+                </div>
+            </div>
+
+            <div class="chips-row">
+                <div class="chip">Introdução clara</div>
+                <div class="chip">Tese definida</div>
+                <div class="chip">2 argumentos</div>
+                <div class="chip">Proposta de intervenção</div>
+                <div class="chip">Conectivos</div>
+            </div>
+
+            <div class="editor-container">
+                <textarea id="essay-input" placeholder="Escreva sua redação sobre o tema selecionado...&#10;&#10;Dica: Comece com uma introdução que apresente o tema e sua tese. Use pelo menos 2 parágrafos de desenvolvimento e finalize com uma conclusão e proposta de intervenção." oninput="updateEditorStats()"></textarea>
+                <div class="editor-footer-stats">
+                    <span id="chars-count">0 chars</span>
+                    <span id="words-count-footer">0 palavras</span>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-info-row">
+                    <span>Progresso mínimo</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+                <div style="font-size: 13px; color: var(--text-muted);" id="words-left-text">Faltam 150 palavras para poder enviar</div>
+            </div>
+
+            <button class="submit-btn" onclick="submitEssay()">
+                Enviar para Correção da IA
+            </button>
+        </section>
+
+        <!-- ETAPA 3: RESULTADO -->
+        <section id="view-3" class="view-section">
+            <div class="score-card">
+                <div class="score-title">NOTA FINAL</div>
+                <div class="score-circle">
+                    <div class="score-value">95</div>
+                    <div class="score-max">/ 100</div>
+                </div>
+                <div class="score-badge-status">
+                    Excelente
+                </div>
+                <div class="xp-reward-pill">
+                    +143 XP ganhos
+                </div>
+            </div>
+
+            <div class="comment-card">
+                <div class="comment-header">
+                    <span>Comentário Geral da IA</span>
+                </div>
+                <div class="comment-body">
+                    Redação bem estruturada! Você demonstrou boa argumentação e coesão textual. Continue desenvolvendo seu repertório cultural.
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">CRITÉRIOS DE AVALIAÇÃO</h3>
+
+            <div class="criterion-card">
+                <div class="criterion-row">
+                    <span>Adequação Linguística</span>
+                    <span style="color: var(--primary);">19/20</span>
+                </div>
+                <div class="criterion-progress">
+                    <div class="criterion-fill" style="width: 95%;"></div>
+                </div>
+            </div>
+
+            <div class="criterion-card">
+                <div class="criterion-row">
+                    <span>Pertinência ao Tema</span>
+                    <span style="color: var(--primary);">20/20</span>
+                </div>
+                <div class="criterion-progress">
+                    <div class="criterion-fill" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">SUGESTÕES DA IA</h3>
+
+            <div class="suggestion-box tip">
+                <div>
+                    <strong>Sugestão de Melhoria</strong><br>
+                    Substitua "Primeiramente" por conectivos mais sofisticados como "Inicialmente" ou "Em um primeiro plano".
+                </div>
+            </div>
+
+            <div class="suggestion-box warning">
+                <div>
+                    <strong>Atenção</strong><br>
+                    Evite expressões vagas como "muito importante". Prefira especificar: "fundamental para...", "imprescindível no contexto de...".
+                </div>
+            </div>
+
+            <div class="suggestion-box info">
+                <div>
+                    <strong>Ponto Positivo</strong><br>
+                    Parágrafo bem desenvolvido com ideia central clara.
+                </div>
+            </div>
+
+            <div class="actions-bottom">
+                <button class="btn-secondary" onclick="navigateToStep(1)">Nova Redação</button>
+                <button class="submit-btn" style="flex: 1;" onclick="navigateToStep(2)">Reescrever</button>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="index.js"></script>
+</body>
+</html>
